@@ -1,0 +1,14 @@
+{
+  "name": "gitflow-production-app",
+  "version": "1.0.0",
+  "description": "Production GitFlow Demo",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "node tests/test.js",
+    "lint": "echo 'Linting code...' && exit 0"
+  },
+  "keywords": ["gitflow", "devops"],
+  "author": "venkata bhargav",
+  "license": "MIT"
+}
