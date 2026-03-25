@@ -8,7 +8,13 @@
     "test": "node tests/test.js",
     "lint": "echo 'Linting code...' && exit 0"
   },
-  "keywords": ["gitflow", "devops"],
+  "keywords": [
+    "gitflow",
+    "devops"
+  ],
   "author": "venkata bhargav",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
 }
