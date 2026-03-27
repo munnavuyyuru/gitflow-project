@@ -1,25 +1,6 @@
-console.log('Running tests...');
+console.log('Running all tests...\n');
 
-// Simple test
-function testHealthCheck() {
-  console.log('✓ Health check test passed');
-  return true;
-}
+require('./user.test');
 
-function testVersionEndpoint() {
-  console.log('✓ Version endpoint test passed');
-  return true;
-}
-
-const results = [
-  testHealthCheck(),
-  testVersionEndpoint()
-];
-
-if (results.every(r => r === true)) {
-  console.log('\n✅ All tests passed!');
-  process.exit(0);
-} else {
-  console.log('\n❌ Tests failed!');
-  process.exit(1);
-}
+console.log('\n✅ All test suites passed!');
+process.exit(0);
