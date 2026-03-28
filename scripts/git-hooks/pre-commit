@@ -1,0 +1,27 @@
+#!/bin/bash
+
+echo "🔍 Running pre-commit checks..."
+
+# Check for merge conflict markers
+if grep -r "<<<<<<< " src/ 2>/dev/null; then
+    echo "Merge conflict markers found!"
+    exit 1
+fi
+
+# Check for console.log in production code (warning only)
+if grep -r "console\.log" src/ 2>/dev/null; then
+    echo "Warning: console.log found in code"
+fi
+
+
+# Run tests
+echo "Running tests..."
+npm test
+
+if [ $? -eq 0 ]; then
+    echo "Pre-commit checks passed! ✔"
+    exit 0
+else
+    echo "Tests failed! Commit aborted. ✖"
+    exit 1
+fi
