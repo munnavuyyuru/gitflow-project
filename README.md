@@ -31,3 +31,22 @@ Types:
 - chore: Maintenance
 - ci: CI/CD changes
 ```
+
+
+### **VERIFICATION TASK :**
+```bash
+# Install hooks locally
+./scripts/install-hooks.sh
+
+# Try invalid commit (should fail)
+echo "test" > test.txt
+git add test.txt
+git commit -m "bad commit"  # Should fail!
+
+# Try valid commit
+git commit -m "test: verify commit hook working"  # Should pass!
+
+# Clean up test
+git reset HEAD~1
+rm test.txt
+```
