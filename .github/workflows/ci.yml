@@ -1,0 +1,66 @@
+name: Gitflow CI pipeline
+
+on:
+  pull_request:
+    branches: [main,develop]
+
+  push:
+    branches: [main,develop]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install --production=false || echo "No dependencies yet"
+
+      - name: Lint code
+        run: npm run lint
+
+      - name: Test cases
+        run: npm test
+
+      - name: Test summary
+        if: always()
+        run: |
+          echo "## Test Results 📊" >> $GITHUB_STEP_SUMMARY
+          echo "✅ All tests completed" >> $GITHUB_STEP_SUMMARY
+
+  security-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+     
+      - name: Run Security Scan
+        run: |
+          echo "Running security checks..."
+          # Check for common security issues
+          ! grep -r "password.*=.*\"" src/ || (echo "❌ Hardcoded password found" && exit 1)
+          ! grep -r "api.*key.*=.*\"" src/ || (echo "❌ Hardcoded API key found" && exit 1)
+          echo "✅ Security scan passed"
+ 
+  version-check:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 
+
+      - name: Check version upgrade
+        run: |
+          echo "Checking if version was updated..."
+          git diff origin/${{ github.base_ref }} -- package.json | grep '"version"' || echo "⚠️  Consider updating version"
