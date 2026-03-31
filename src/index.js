@@ -8,9 +8,11 @@ app.use(express.json());
 app.get('/', (req, res) => {
   res.json({ 
     message: 'GitFlow Production App',
-    version: 'V1.1.1',  // Added v prefix!
+    version: 'V1.1.1',  // From feature/version-format
     environment: process.env.NODE_ENV || 'development',
-    build : 'stable'
+    build : 'stable', // From feature/version-format
+    author: 'DevOps Team',  // From feature/add-metadata
+    repository: 'https://github.com/munnavuyyuru/gitflow-project' // From  feature/add-metadata
   });
 });
 
