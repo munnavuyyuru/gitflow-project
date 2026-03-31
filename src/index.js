@@ -8,8 +8,9 @@ app.use(express.json());
 app.get('/', (req, res) => {
   res.json({ 
     message: 'GitFlow Production App',
-    version: '1.1.1',  // Hot fix version!
-    environment: process.env.NODE_ENV || 'development'
+    version: 'V1.1.1',  // Added v prefix!
+    environment: process.env.NODE_ENV || 'development',
+    build : 'stable'
   });
 });
 
