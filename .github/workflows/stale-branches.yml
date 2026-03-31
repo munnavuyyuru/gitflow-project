@@ -1,0 +1,36 @@
+name: Stale Branch Detection
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'  # Run every Sunday
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  stale-branches:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    
+    - name: Find stale branches
+      run: |
+        echo "# Stale Branch Report : " >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "Branches older than 30 days:" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        
+        # Get all remote branches except main and develop
+        for branch in $(git branch -r | grep -v 'HEAD\|main\|develop'); do
+          # Get last commit date
+          last_commit=$(git log -1 --format=%ct $branch)
+          current_time=$(date +%s)
+          days_old=$(( ($current_time - $last_commit) / 86400 ))
+          
+          if [ $days_old -gt 30 ]; then
+            branch_name=$(echo $branch | sed 's/origin\///')
+            echo "- **$branch_name** - $days_old days old" >> $GITHUB_STEP_SUMMARY
+          fi
+        done
